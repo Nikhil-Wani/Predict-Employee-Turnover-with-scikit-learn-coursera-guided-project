@@ -7,6 +7,6 @@ Now, we you will apply decision trees and random forests using scikit-learn and 
 3. Encode Categorical Features
 4. Visualize Class Imbalance
 5. Create Training and Test Sets
-6,7. Build a Decision Tree Classifier with Interactive Controls
-8. Build a Random Forest Classifier with Interactive Controls
-9. Feature Importance Plots and Evaluation Metrics
+6. Build a Decision Tree Classifier with Interactive Controls
+7. Build a Random Forest Classifier with Interactive Controls
+8. Feature Importance Plots and Evaluation Metrics
