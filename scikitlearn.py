@@ -1,7 +1,7 @@
 from __future__ import print_function
 %matplotlib inline
 
-//task 1: importing libraries
+#task 1: importing libraries
 
 import os
 import warnings
@@ -15,7 +15,7 @@ warnings.simplefilter("ignore")
 
 lt.rcParams['figure.figsize'] = (12,8)
 
-//task 2: Exploratory data analysis
+#task 2: Exploratory data analysis
 
 hr =  pd.read_csv('data/employee_data.csv')
 hr.head()
@@ -34,7 +34,7 @@ plt.xlabel('salary')
 plt.ylabel('frequency of turnover')
 plt.show()
 
-//task 3: Encode categorical features
+#task 3: Encode categorical features
 
 cat_vars = ['department', 'salary']
 for var in cat_vars:
@@ -45,7 +45,7 @@ hr.head()
 
 hr.drop(columns = ['department', 'salary'], axis = 1, inplace = True)
 
-//Task 4: Visualize class imbalance
+#Task 4: Visualize class imbalance
 
 from yellowbrick.target import ClassBalance
 plt.style.use("ggplot")
@@ -54,7 +54,7 @@ plt.rcParams['figure.figsize'] = (12,8)
 visualizer =  ClassBalance(labels = ['stayed','quit']).fit(hr.quit)
 visualizer.show()
 
-//Task 5: Create traning and tests sets
+#Task 5: Create traning and tests sets
 
 X = hr.loc[:, hr.columns != 'quit']
 y = hr.quit
@@ -62,7 +62,7 @@ y = hr.quit
 from sklearn.model_selection import train_test_split
 X_train, X_test, y_train, y_test = train_test_split(X, y,random_state = 0, test_size=0.2,stratify=y)
 
-//Task 6 & 7: Build an interactive decision tree classifer
+#Task 6 : Build an interactive decision tree classifer
 
 from sklearn import tree
 from sklearn.tree import DecisionTreeClassifier
