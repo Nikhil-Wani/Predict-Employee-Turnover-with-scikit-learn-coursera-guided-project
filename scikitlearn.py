@@ -78,3 +78,106 @@ from IPython.display import Image
 from subprocess import call
 import matplotlib.image as mpimg
 
+@interact
+def plot_tree(crit=['gini','entropy'],
+                 split=['best','random'],
+                 depth=IntSlider(min=1,max=30,value=2,  continuous_update=False),
+                 min_split=IntSlider(min=2,max=5,value=2, continous_update=False),
+                 min_leaf=IntSlider(min=1,max=5,value=1, continuous_update=False)):
+    estimator = DecisionTreeClassifer(random_state=0,
+                                      criterion=crit,
+                                      splitter=split,
+                                      max_depth=depth,
+                                      min_samples_split=min_split,
+                                      min_samples_leaf=min_leaf)
+    estimator.fit(X_train, y_train)
+    print('Decision tree tranning accuracy: {:.3f}'.format(accuracy_score(y_train,estimator.predict(X_train))))
+    print('Decision tree tranning accuracy: {:.3f}'.format(accuracy_score(y_test,estimator.predict(X_test))))
+                                     
+    graph = Source(tree.export_graphviz(estimator,out_file=None,
+                                        feature_names=X_train.columns,
+                                        class_names=['stayed','quit'],
+                                        filled=True))
+    display(Image(data=graph.pipe(format='png')))
+    
+  #Task 8: Build an interactive random forest classifer
+    
+   # Although randomization increases bias, it is possible to get a reduction in variance of the ensemble. 
+   #Random forests are one of the most robust machine learning algorithms for a variety of problems.
+    #1.Randomization and averaging lead to a reduction in variance and improve accuracy
+    #2.The implementations are parallelizable
+    #3.Memory consumption and training time can be reduced by bootstrapping
+    #4.Sampling features and not solely sampling examples is crucial to improving accuracy
+    
+@interact
+def plot_tree_rf(crit=['gini','entropy'],
+                 bootstrap=['True','False'],
+                 depth=IntSlider(min=1,max=30,value=2,  continuous_update=False),
+                 forests=IntSlider(min=1,max=200,value=100, continuous_update=False),
+                 min_split=IntSlider(min=2,max=5,value=2, continous_update=False),
+                 min_leaf=IntSlider(min=1,max=5,value=1, continuous_update=False)):
+    estimator = DecisionTreeClassifer(random_state=0,
+                                      criterion = crit,
+                                      bootstrap = bootstrap,
+                                      n_estimators = forests,
+                                      max_depth = depth,
+                                      min_samples_split=min_split,
+                                      min_samples_split=min_leaf,
+                                      n_jobs = -1,
+                                      verbose= False).fit(X_train,y_train)
+    estimator.fit(X_train, y_train)
+                                      
+    print('Decision tree tranning accuracy: {:.3f}'.format(accuracy_score(y_train,estimator.predict(X_train))))
+    print('Decision tree tranning accuracy: {:.3f}'.format(accuracy_score(y_test,estimator.predict(X_test))))
+    num_tree = estimator.estimators_[0]
+    print('\Visualizing tree:',0)         
+                                     
+    graph = Source(tree.export_graphviz(num_tree,
+                                        out_file=None,
+                                        feature_names=X_train.columns,
+                                        class_names=['stayed','quit'],
+                                        filled=True))
+    
+    display(Image(data=graph.pipe(format='png')))
+    
+#task 9: Feature importance and evolution metrics
+
+from yellowbrick.model_selection import FeatureImportances
+plt.rcParams['figure.figsize'] = (12,8)
+plt.style.use("ggplot")
+
+rf = RandomForestClassifer(bootstrap = 'True', class_weight = None, criterion='gini',
+                           max_depth=5, max_feature='auto', max_leaf_nodes = None,
+                           min_impurity_decrease=0.0, min_impurity_split= None,
+                           min_samples_leaf=1, min_samples_split=2,
+                           min_weight_fraction_leaf=0.0, n_estimators=100, n_jobs=-1,
+                           oob_score=False, random_state=1, verbose=False,
+                           warn_start=False)
+viz= FeatureImportances(rf)
+viz.fit(X_train,y_train)
+viz.show();
+
+
+dt = DecisionForestClassifer(class_weight = None, criterion='gini',
+                           max_depth=3, max_feature='None', max_leaf_nodes = None,
+                           min_impurity_decrease=0.0, min_impurity_split= None,
+                           min_samples_leaf=1, min_samples_split=2,
+                           min_weight_fraction_leaf=0.0, presort=False,random_state=0,
+                           splitters='best')
+                           
+viz= FeatureImportances(dt)
+viz.fit(X_train,y_train)
+viz.show();
+
+
+from yellowbrick.classifer import ROCAUC
+
+visualizer = ROCAUC(rf, classes=['stayed','quit'])
+
+visualizer.fit(X_train, y_train)
+visulizer.score(X_test, y_test)
+visualizer.pool();
+
+
+                    
+
