@@ -100,7 +100,7 @@ def plot_tree(crit=['gini','entropy'],
                                         filled=True))
     display(Image(data=graph.pipe(format='png')))
     
-  #Task 8: Build an interactive random forest classifer
+  #Task 7: Build an interactive random forest classifer
     
    # Although randomization increases bias, it is possible to get a reduction in variance of the ensemble. 
    #Random forests are one of the most robust machine learning algorithms for a variety of problems.
@@ -140,7 +140,7 @@ def plot_tree_rf(crit=['gini','entropy'],
     
     display(Image(data=graph.pipe(format='png')))
     
-#task 9: Feature importance and evolution metrics
+#task 8: Feature importance and evolution metrics
 
 from yellowbrick.model_selection import FeatureImportances
 plt.rcParams['figure.figsize'] = (12,8)
