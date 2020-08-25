@@ -100,14 +100,8 @@ def plot_tree(crit=['gini','entropy'],
                                         filled=True))
     display(Image(data=graph.pipe(format='png')))
     
-  #Task 7: Build an interactive random forest classifer
     
-   # Although randomization increases bias, it is possible to get a reduction in variance of the ensemble. 
-   #Random forests are one of the most robust machine learning algorithms for a variety of problems.
-    #1.Randomization and averaging lead to a reduction in variance and improve accuracy
-    #2.The implementations are parallelizable
-    #3.Memory consumption and training time can be reduced by bootstrapping
-    #4.Sampling features and not solely sampling examples is crucial to improving accuracy
+#Task 7: Build an interactive random forest classifer
     
 @interact
 def plot_tree_rf(crit=['gini','entropy'],
@@ -177,7 +171,3 @@ visualizer = ROCAUC(rf, classes=['stayed','quit'])
 visualizer.fit(X_train, y_train)
 visulizer.score(X_test, y_test)
 visualizer.pool();
-
-
-                    
-
